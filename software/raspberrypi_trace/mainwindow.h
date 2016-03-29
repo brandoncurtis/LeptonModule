@@ -29,6 +29,7 @@ public:
 public slots:
     void saveSnapshot();
     void updateImage(unsigned short *, int, int);
+    void updateScreen();
 };
 
 #endif // MAINWINDOW_H

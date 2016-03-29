@@ -32,9 +32,9 @@ MainWindow::MainWindow(QWidget *parent)
     thread = new LeptonThread();
     connect(thread, SIGNAL(updateImage(unsigned short *,int,int)), this, SLOT(updateImage(unsigned short *, int,int)));
 
-    QPushButton *snapshotButton = new QPushButton("Snapshot");
-    layout->addWidget(snapshotButton, 1, 0, Qt::AlignCenter);
-    connect(snapshotButton, SIGNAL(clicked()), this, SLOT(saveSnapshot()));
+    QPushButton *refreshButton = new QPushButton("Refresh View");
+    layout->addWidget(refreshButton, 1, 0, Qt::AlignCenter);
+    connect(refreshButton, SIGNAL(clicked()), this, SLOT(updateScreen()));
 
     thread->start();
 }
@@ -68,6 +68,25 @@ void MainWindow::updateImage(unsigned short *data, int minValue, int maxValue){
     // BC: WHAT WE CAME FOR
     // BC: ACTIVATE AFTER TEST 01
     saveSnapshot();
+}
+
+void MainWindow::updateScreen(){
+	// WANT THE THING? PRESS THE BUTTON.
+    // Map "rawData" to rgb values in "rgbImage" via the colormap
+    int diff = rawMax - rawMin + 1;
+    for (int y = 0; y < LeptonThread::FrameHeight; ++y) {
+        for (int x = 0; x < LeptonThread::FrameWidth; ++x) {
+            int baseValue = rawData[LeptonThread::FrameWidth*y + x]; // take input value in [0, 65536)
+            int scaledValue = 256*(baseValue - rawMin)/diff; // map value to interval [0, 256), and set the pixel to its color value above
+            rgbImage.setPixel(x, y, qRgb(colormap[3*scaledValue], colormap[3*scaledValue+1], colormap[3*scaledValue+2]));
+        }
+    }
+
+    // Update the on-screen image
+    QPixmap pixmap = QPixmap::fromImage(rgbImage).scaled(ImageWidth, ImageHeight, Qt::KeepAspectRatio);
+    QPainter painter(&pixmap);
+    // ... mark up pixmap, if so desired
+    imageLabel->setPixmap(pixmap);
 }
 
 void MainWindow::saveSnapshot() {
