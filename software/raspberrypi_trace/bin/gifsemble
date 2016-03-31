@@ -1,0 +1,2 @@
+#!/bin/bash
+convert -delay 5 -loop 1 *.png animated.gif && rm *.png
