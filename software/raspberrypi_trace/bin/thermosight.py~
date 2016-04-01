@@ -42,7 +42,7 @@ def temp_plot(filename):
 
     # set some bounds for my colormapping
     tmin = 7900
-    tmax = 10015
+    tmax = 10000
 
     # plot my colormapped data
     fig1 = plt.figure()
