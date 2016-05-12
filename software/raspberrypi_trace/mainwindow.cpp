@@ -10,6 +10,10 @@
 
 #include "LeptonThread.h"
 
+#include <stdio.h>
+#include <time.h>
+#include <QDateTime>
+
 int MainWindow::snapshotCount = 0;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -68,10 +72,11 @@ void MainWindow::updateImage(unsigned short *data, int minValue, int maxValue){
     // BC: WHAT WE CAME FOR
     // BC: ACTIVATE AFTER TEST 01
     saveSnapshot();
+    sleep(1); // delay between loops in seconds
 }
 
 void MainWindow::updateScreen(){
-	// WANT THE THING? PRESS THE BUTTON.
+    // WANT THE THING? PRESS THE BUTTON.
     // Map "rawData" to rgb values in "rgbImage" via the colormap
     int diff = rawMax - rawMin + 1;
     for (int y = 0; y < LeptonThread::FrameHeight; ++y) {
@@ -90,11 +95,28 @@ void MainWindow::updateScreen(){
 }
 
 void MainWindow::saveSnapshot() {
-    ++snapshotCount;
-    char buf [10];
-	sprintf(buf,"%08u",snapshotCount);
+    // Stamp with snapshotcount
+    //++snapshotCount;
+    //char buf [10];
+    //sprintf( buf, "%08u", snapshotCount );
+
+    // Stamp with timestamp
+    //time_t rawtime;
+    //struct tm * timeinfo;
+    //time ( &rawtime );
+    //timeinfo = localtime ( &rawtime );
+    //char buf [50];
+    //sprintf( buf, "%025s", asctime (timeinfo) );
+
+
+    QDateTime dt = QDateTime::currentDateTime();
+    dt.setTimeSpec(Qt::UTC);  // or Qt::OffsetFromUTC for offset from UTC
+    //qDebug() << QDateTime::currentDateTime().toString(Qt::ISODate);
+    //char buf [sizeof "2016-01-01T012:00:00.000000"];
+    //sprintf( buf, "%025s", QDateTime::currentDateTime().toString(Qt::ISODate) );
+
     // Raw file format: binary, one word for min value, one for max value, then 80*60 words of raw data
-    QFile rawFile(QString("raw%1.bin").arg(buf));
+    QFile rawFile(QString("thermograph_%1.bin").arg( QDateTime::currentDateTime().toString(Qt::ISODate) ));
     rawFile.open(QIODevice::Truncate | QIODevice::ReadWrite);
     QDataStream rawOut(&rawFile);
     rawOut << rawMin << rawMax;

@@ -47,7 +47,6 @@ def temp_plot(filename):
     # plot my colormapped data
     fig1 = plt.figure()
     plt1 = plt.subplot(1,1,1)
-    
     img = plt1.imshow(b,interpolation='none',cmap=plt.cm.gnuplot)
     #img = plt1.imshow(b,interpolation='none',cmap=plt.cm.gnuplot,vmin=tmin,vmax=tmax)
 
@@ -70,7 +69,7 @@ def temp_plot(filename):
 
 # %matplotlib inline
 
-stem = '/home/brandon/repos/leptonmodule/software/raspberrypi_trace/bin/'
+stem = '/home/brandon/repos/leptonmodule/software/raspberrypi_qt/'
 fol = ''
 
 datas = sorted(os.listdir(stem+fol))
