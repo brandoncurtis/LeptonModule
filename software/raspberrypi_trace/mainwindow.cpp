@@ -61,7 +61,8 @@ void MainWindow::updateImage(unsigned short *data, int minValue, int maxValue){
     qDebug() << maxValue;
     qDebug() << "";
     
-    if ( !(rawMin == minValue && rawMax == maxValue) )
+    //if ( !(rawMin == minValue && rawMax == maxValue) )
+    if ( freshData )
     {
         rawMin = minValue; rawMax = maxValue;
         

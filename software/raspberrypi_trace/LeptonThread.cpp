@@ -155,7 +155,8 @@ void LeptonThread::run() {
             }
         }
 
-        emit updateImage(&rawData[0], minValue, maxValue);
+        if (initLepton())
+          emit updateImage(&rawData[0], minValue, maxValue);
 
 #if !HAVE_LEPTON
         usleep(50000);  // Need to slow things down if no ioctl call!
