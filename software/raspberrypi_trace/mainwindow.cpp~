@@ -51,10 +51,11 @@ void MainWindow::updateImage(unsigned short *data, int minValue, int maxValue){
     memcpy(&rawData[0], data, 2*LeptonThread::FrameWords);
     
     if ( !(rawMin == minValue && rawMax == maxValue) )
-        rawMin = minValue; rawMax = maxValue;
         // BC: WHAT WE CAME FOR
         // BC: ACTIVATE AFTER TEST 01
         saveSnapshot();
+        
+    rawMin = minValue; rawMax = maxValue;
 
     // Map "rawData" to rgb values in "rgbImage" via the colormap
     // BC: NEVER MIND THIS
