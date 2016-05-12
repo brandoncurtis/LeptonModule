@@ -49,38 +49,29 @@ const int colormap[] = {255, 255, 255, 253, 253, 253, 251, 251, 251, 249, 249, 2
 
 void MainWindow::updateImage(unsigned short *data, int minValue, int maxValue){
     // Record the raw data and min/max values
-    memcpy(&rawData[0], data, 2*LeptonThread::FrameWords);
-    
-    qDebug() << "rawMin:";
-    qDebug() << rawMin;
-    qDebug() << "minValue:";
-    qDebug() << minValue;
-    qDebug() << "rawMax:";
-    qDebug() << rawMax;
-    qDebug() << "maxValue:";
-    qDebug() << maxValue;
-    qDebug() << "";
-    
-    //if ( !(rawMin == minValue && rawMax == maxValue) )
-    if ( freshData )
-    {
-        rawMin = minValue; rawMax = maxValue;
-        
-        qDebug() << "rawMin:";
-        qDebug() << rawMin;
-        qDebug() << "minValue:";
-        qDebug() << minValue;
-        qDebug() << "rawMax:";
-        qDebug() << rawMax;
-        qDebug() << "maxValue:";
-        qDebug() << maxValue;
-        qDebug() << "";
+
+	if (memcmp(&rawData[0], data, 2*LeptonThread::FrameWords) != 0)
+	{
+		memcpy(&rawData[0], data, 2*LeptonThread::FrameWords);
+    	rawMin = minValue; rawMax = maxValue;
+		qDebug() << "rawMin:";
+		qDebug() << rawMin;
+		qDebug() << "minValue:";
+		qDebug() << minValue;
+		qDebug() << "rawMax:";
+		qDebug() << rawMax;
+		qDebug() << "maxValue:";
+		qDebug() << maxValue;
+		qDebug() << "";
 
         saveSnapshot();
-        qDebug() << "snapshot saved";
-        //updateScreen();
-        //qDebug() << "screen updated";
-    }
+    	qDebug() << "snapshot saved";
+	}
+		qDebug() << "same... skipping...";
+
+
+    //updateScreen();
+    //qDebug() << "screen updated";
 
     // Map "rawData" to rgb values in "rgbImage" via the colormap
     // BC: NEVER MIND THIS
