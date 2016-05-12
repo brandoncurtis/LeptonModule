@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     , rawData(LeptonThread::FrameWords)
     , rgbImage(LeptonThread::FrameWidth, LeptonThread::FrameHeight, QImage::Format_RGB888) {
 
+
     QWidget *mainWidget = new QWidget();
     setCentralWidget(mainWidget);
 
@@ -34,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     imageLabel->setPixmap(filler);
 
     thread = new LeptonThread();
-    connect(thread, SIGNAL(updateImage(unsigned short *,int,int)), this, SLOT(updateImage(unsigned short *, int,int)));
+    connect(thread, SIGNAL(updateImage(unsigned short *,int,int)), this, SLOT(updateImage(unsigned short *,int,int)));
 
     QPushButton *refreshButton = new QPushButton("Refresh View");
     layout->addWidget(refreshButton, 1, 0, Qt::AlignCenter);
@@ -50,11 +51,35 @@ void MainWindow::updateImage(unsigned short *data, int minValue, int maxValue){
     // Record the raw data and min/max values
     memcpy(&rawData[0], data, 2*LeptonThread::FrameWords);
     
+    qDebug() << "rawMin:";
+    qDebug() << rawMin;
+    qDebug() << "minValue:";
+    qDebug() << minValue;
+    qDebug() << "rawMax:";
+    qDebug() << rawMax;
+    qDebug() << "maxValue:";
+    qDebug() << maxValue;
+    qDebug() << "";
+    
     if ( !(rawMin == minValue && rawMax == maxValue) )
+    {
         rawMin = minValue; rawMax = maxValue;
-        // BC: WHAT WE CAME FOR
-        // BC: ACTIVATE AFTER TEST 01
+        
+        qDebug() << "rawMin:";
+        qDebug() << rawMin;
+        qDebug() << "minValue:";
+        qDebug() << minValue;
+        qDebug() << "rawMax:";
+        qDebug() << rawMax;
+        qDebug() << "maxValue:";
+        qDebug() << maxValue;
+        qDebug() << "";
+
         saveSnapshot();
+        qDebug() << "snapshot saved";
+        //updateScreen();
+        //qDebug() << "screen updated";
+    }
 
     // Map "rawData" to rgb values in "rgbImage" via the colormap
     // BC: NEVER MIND THIS

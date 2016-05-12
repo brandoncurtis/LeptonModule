@@ -143,12 +143,15 @@ void LeptonThread::run() {
             in += 4;
             for (int iCol = 0; iCol < FrameWidth; ++iCol) {
                 unsigned short value = in[0];
-                value <<= 8;
-                value |= in[1];
+                unsigned short datapoint = in[0];
+                datapoint <<= 8;
+                datapoint |= in[1];
+                value |= (in[1] <<= 8);
                 in += 2;
                 if (value > maxValue) maxValue = value;
                 if (value < minValue) minValue = value;
-                *(out++) = value;
+                //*(out++) = value;
+                *(out++) = datapoint;
             }
         }
 

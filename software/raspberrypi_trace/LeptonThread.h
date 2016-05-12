@@ -1,7 +1,7 @@
 #ifndef LEPTONTHREAD
 #define LEPTONTHREAD
 
-#define HAVE_LEPTON true
+#define HAVE_LEPTON false
 #define DEBUG_LEPTON false
 
 #include <stdint.h>
